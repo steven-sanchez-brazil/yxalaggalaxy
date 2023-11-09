@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-image: url('wallpaperbetter.jpg'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center center; /* Centra la imagen en el fondo */
+    background-attachment: fixed; /* Fija la imagen para que el fondo no se desplace */
+}
+
+.game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Agrega un fondo oscuro semitransparente */
+}
+
+.hexagon {
+    position: absolute;
+    width: 40px;
+    height: 46px;
+    background-color: rgba(255, 153, 0, 0.7); /* Color naranja brillante con mayor opacidad */
+    clip-path: polygon(
+        50% 0%,
+        100% 25%,
+        100% 75%,
+        50% 100%,
+        0% 75%,
+        0% 25%
+    );
+    /* Agregamos un efecto de resplandor con box-shadow */
+    box-shadow: 0 0 20px rgba(255, 153, 0, 1); /* Aumentamos la opacidad del resplandor */
+}
+
+
+
