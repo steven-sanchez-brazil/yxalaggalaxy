@@ -27,37 +27,37 @@ body {
     position: absolute;
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 192, 203, 0.4);
+    box-shadow: 0 0 10px rgba(255, 192, 203, 0.3);
 }
 
 .cube-face.front {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(218, 165, 32, 0.8));
+    background: linear-gradient(135deg, rgba(255, 192, 203, 0.9), rgba(219, 112, 147, 0.8));
     transform: translateZ(20px);
 }
 
 .cube-face.back {
-    background: linear-gradient(315deg, rgba(184, 134, 11, 0.8), rgba(160, 120, 10, 0.7));
+    background: linear-gradient(315deg, rgba(199, 21, 133, 0.8), rgba(176, 48, 96, 0.7));
     transform: rotateY(180deg) translateZ(20px);
 }
 
 .cube-face.right {
-    background: linear-gradient(225deg, rgba(200, 150, 20, 0.8), rgba(184, 134, 11, 0.7));
+    background: linear-gradient(225deg, rgba(238, 130, 238, 0.8), rgba(199, 21, 133, 0.7));
     transform: rotateY(90deg) translateZ(20px);
 }
 
 .cube-face.left {
-    background: linear-gradient(45deg, rgba(160, 120, 10, 0.8), rgba(140, 100, 8, 0.7));
+    background: linear-gradient(45deg, rgba(176, 48, 96, 0.8), rgba(139, 69, 19, 0.7));
     transform: rotateY(-90deg) translateZ(20px);
 }
 
 .cube-face.top {
-    background: linear-gradient(0deg, rgba(255, 235, 59, 0.9), rgba(255, 215, 0, 0.8));
+    background: linear-gradient(0deg, rgba(255, 182, 193, 0.9), rgba(255, 192, 203, 0.8));
     transform: rotateX(90deg) translateZ(20px);
 }
 
 .cube-face.bottom {
-    background: linear-gradient(180deg, rgba(140, 100, 8, 0.8), rgba(120, 80, 5, 0.7));
+    background: linear-gradient(180deg, rgba(139, 69, 19, 0.8), rgba(128, 0, 128, 0.7));
     transform: rotateX(-90deg) translateZ(20px);
 }
 
