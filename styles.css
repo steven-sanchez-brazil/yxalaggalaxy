@@ -1,36 +1,90 @@
 body {
     margin: 0;
     overflow: hidden;
-    background-image: url('wallpaperbetter.jpg'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
-    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-position: center center; /* Centra la imagen en el fondo */
-    background-attachment: fixed; /* Fija la imagen para que el fondo no se desplace */
+    background-image: url('wallpaperbetter.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
 .game {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Agrega un fondo oscuro semitransparente */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .hexagon {
     position: absolute;
     width: 40px;
-    height: 46px;
-    background-color: rgba(255, 153, 0, 0.7); /* Color naranja brillante con mayor opacidad */
-    clip-path: polygon(
-        50% 0%,
-        100% 25%,
-        100% 75%,
-        50% 100%,
-        0% 75%,
-        0% 25%
-    );
-    /* Agregamos un efecto de resplandor con box-shadow */
-    box-shadow: 0 0 20px rgba(255, 153, 0, 1); /* Aumentamos la opacidad del resplandor */
+    height: 40px;
+    transform-style: preserve-3d;
+    animation: cubeRotate 4s infinite linear;
 }
 
+.cube-face {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
 
+.cube-face.front {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(218, 165, 32, 0.8));
+    transform: translateZ(20px);
+}
 
+.cube-face.back {
+    background: linear-gradient(315deg, rgba(184, 134, 11, 0.8), rgba(160, 120, 10, 0.7));
+    transform: rotateY(180deg) translateZ(20px);
+}
+
+.cube-face.right {
+    background: linear-gradient(225deg, rgba(200, 150, 20, 0.8), rgba(184, 134, 11, 0.7));
+    transform: rotateY(90deg) translateZ(20px);
+}
+
+.cube-face.left {
+    background: linear-gradient(45deg, rgba(160, 120, 10, 0.8), rgba(140, 100, 8, 0.7));
+    transform: rotateY(-90deg) translateZ(20px);
+}
+
+.cube-face.top {
+    background: linear-gradient(0deg, rgba(255, 235, 59, 0.9), rgba(255, 215, 0, 0.8));
+    transform: rotateX(90deg) translateZ(20px);
+}
+
+.cube-face.bottom {
+    background: linear-gradient(180deg, rgba(140, 100, 8, 0.8), rgba(120, 80, 5, 0.7));
+    transform: rotateX(-90deg) translateZ(20px);
+}
+
+@keyframes cubeRotate {
+    0% {
+        transform: perspective(500px) rotateX(-15deg) rotateY(0deg) rotateZ(0deg);
+    }
+    25% {
+        transform: perspective(500px) rotateX(15deg) rotateY(90deg) rotateZ(90deg);
+    }
+    50% {
+        transform: perspective(500px) rotateX(-15deg) rotateY(180deg) rotateZ(180deg);
+    }
+    75% {
+        transform: perspective(500px) rotateX(15deg) rotateY(270deg) rotateZ(270deg);
+    }
+    100% {
+        transform: perspective(500px) rotateX(-15deg) rotateY(360deg) rotateZ(360deg);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotateX(-20deg) rotateY(0deg);
+    }
+    to {
+        transform: rotateX(-20deg) rotateY(360deg);
+    }
+}
+}
