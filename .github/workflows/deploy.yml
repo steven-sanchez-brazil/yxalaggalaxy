@@ -1,0 +1,28 @@
+name: Deploy a GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Subir archivos a Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: .  # Carpeta raíz, donde está index.html
+
+      - name: Publicar sitio
+        uses: actions/deploy-pages@v3
