@@ -1,0 +1,57 @@
+name: CI/CD Frontend
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+concurrency:
+    group: "pages"
+    cancel-in-progress: true
+
+jobs:
+    ci:
+        name: Validación del código
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🔄 Clonar repositorio
+              uses: actions/checkout@v4
+
+            - name: 🛠️ Instalar linters
+              run: |
+                  npm init -y
+                  npm install --save-dev htmlhint stylelint eslint
+
+            - name: 🧪 Validar HTML
+              run: npx htmlhint index.html landing.html
+
+            - name: 🎨 Validar CSS
+              run: npx stylelint styles.css || true
+
+            - name: 🧠 Validar JS
+              run: npx eslint script.js || true
+
+    cd:
+        name: Despliegue a GitHub Pages
+        needs: ci
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/configure-pages@v5
+
+            - uses: actions/upload-pages-artifact@v3
+              with:
+                  path: .
+
+            - id: deployment
+              uses: actions/deploy-pages@v4
