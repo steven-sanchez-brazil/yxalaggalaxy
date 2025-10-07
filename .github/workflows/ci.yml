@@ -13,5 +13,19 @@ jobs:
       - name: "Checkout del código"
         uses: actions/checkout@v4
 
+      - name: 🛠️ Instalar linters
+        run: |
+          npm init -y
+          npm install --save-dev htmlhint stylelint eslint
+
+      - name: 🧪 Validar HTML
+        run: npx htmlhint index.html landing.html
+
+      - name: 🎨 Validar CSS
+        run: npx stylelint styles.css || true # (si no hay config aún)
+
+      - name: 🧠 Validar JS
+        run: npx eslint script.js || true # (si no hay config aún)
+
       - name: "Validación básica"
-        run: echo "Proyecto cargado correctamente. Archivos index.html, script.js, styles.css"
+        run: echo "Proyecto cargado correctamente."
