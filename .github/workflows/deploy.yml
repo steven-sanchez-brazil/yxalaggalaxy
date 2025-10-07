@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  workflow_dispatch: # Solo se ejecuta manualmente
-  #workflow_run:
-  #workflows: ["Frontend CI"]
-  #types: [completed]
+  #workflow_dispatch: # Solo se ejecuta manualmente
+  workflow_run:
+    workflows: ["Frontend CI"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -16,24 +16,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  prepare:
+    name: 🗂️ Preparar artefacto
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprimir archivos
+        run: |
+          mkdir build
+          cp index.html landing.html script.js styles.css build/
+          tar -czf build.tgz build
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitio
+          path: build.tgz
+
+  deploy:
+    name: 🚀 Publicar en GitHub Pages
+    needs: prepare
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: . # raíz donde está tu index.html
-
-      - name: Deploy to Pages
-        id: deployment
+          path: .
+      - id: deployment
         uses: actions/deploy-pages@v4

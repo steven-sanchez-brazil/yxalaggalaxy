@@ -1,32 +1,43 @@
-name: "Validación de Frontend"
+name: "Frontend CI"
 
 on:
-  workflow_dispatch: # Solo se ejecuta manualmente
-  #push:
-  #  branches: [main]
-  #pull_request:
-  #  branches: [main]
+  #workflow_dispatch: # Solo se ejecuta manualmente
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  validate:
+  lint:
+    name: 🔎 Linting (HTML/CSS/JS)
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout del código"
-        uses: actions/checkout@v4
-
-      - name: 🛠️ Instalar linters
+      - uses: actions/checkout@v4
+      - name: Instalar dependencias
         run: |
           npm init -y
           npm install --save-dev htmlhint stylelint eslint
-
-      - name: 🧪 Validar HTML
+      - name: Validar HTML
         run: npx htmlhint index.html landing.html
+      - name: Validar CSS
+        run: npx stylelint styles.css || true
+      - name: Validar JS
+        run: npx eslint script.js || true
 
-      - name: 🎨 Validar CSS
-        run: npx stylelint styles.css || true # (si no hay config aún)
+  build:
+    name: 🏗️ Build del proyecto
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simular build (para proyectos estáticos)
+        run: echo "Aquí podrías minificar o empaquetar tu código"
 
-      - name: 🧠 Validar JS
-        run: npx eslint script.js || true # (si no hay config aún)
-
-      - name: "Validación básica"
-        run: echo "Proyecto cargado correctamente."
+  tests:
+    name: 🧪 Tests básicos
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ejecutar pruebas (placeholder)
+        run: echo "Aquí podrías ejecutar tests de integración o unitarios"
