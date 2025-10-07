@@ -36,7 +36,9 @@ jobs:
   check_network:
     name: 🌐 Verificar conectividad antes del deploy
     needs: prepare
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    #runs-on: self-hosted
+    runs-on: [self-hosted, macOS, X64]
     steps:
       - name: Hacer ping a 8.8.8.8
         run: |
