@@ -33,9 +33,27 @@ jobs:
           name: sitio
           path: build.tgz
 
+  check_network:
+    name: 🌐 Verificar conectividad antes del deploy
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hacer ping a 8.8.8.8
+        run: |
+          echo "🔎 Comprobando conectividad..."
+          ping -c 10 8.8.8.8
+      - name: Validar resultado del ping
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "❌ No hay respuesta de 8.8.8.8. Abortando despliegue."
+            exit 1
+          else
+            echo "✅ Conectividad OK, continuando..."
+          fi
+
   deploy:
     name: 🚀 Publicar en GitHub Pages
-    needs: prepare
+    needs: check_network
     runs-on: ubuntu-latest
     environment:
       name: github-pages
