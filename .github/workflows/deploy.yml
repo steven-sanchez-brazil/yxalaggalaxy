@@ -13,7 +13,7 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout del código
+      - name: Checkout del códigoo
         uses: actions/checkout@v4
 
       - name: Configurar GitHub Pages
