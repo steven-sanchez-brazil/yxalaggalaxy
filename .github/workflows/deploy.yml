@@ -61,7 +61,7 @@ jobs:
 
   deploy:
     name: 🚀 Publicar en GitHub Pages
-    #needs: check_network
+    needs: check_network
     runs-on: ubuntu-latest
     environment: { name: production } # requiere aprobación en GitHub
     #environment:
