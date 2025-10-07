@@ -39,11 +39,17 @@ jobs:
     #runs-on: ubuntu-latest
     #runs-on: self-hosted
     runs-on: [self-hosted, macOS, X64]
+    timeout-minutes: 5
+    env:
+      PING_COUNT: ${{ vars.PING_COUNT }} # define vars.PING_COUNT si quieres cambiar el 10 por defecto
+
     steps:
       - name: Hacer ping a 8.8.8.8
         run: |
+          COUNT="${PING_COUNT:-10}"
           echo "🔎 Comprobando conectividad..."
-          ping -c 10 8.8.8.8
+          echo "Ping con $COUNT paquetes…"
+          ping -c "$COUNT" 8.8.8.8
       - name: Validar resultado del ping
         run: |
           if [ $? -ne 0 ]; then
@@ -57,11 +63,26 @@ jobs:
     name: 🚀 Publicar en GitHub Pages
     #needs: check_network
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    environment: { name: production } # requiere aprobación en GitHub
+    #environment:
+    #  name: github-pages
+    #  url: ${{
+    #steps.deployment.outputs.page_url }}
+    env:
+      SITE_NAME: ${{ vars.SITE_NAME }}
+      API_TOKEN: ${{ secrets.API_TOKEN }}
+      PROD_WEBHOOK_URL: ${{ secrets.PROD_WEBHOOK_URL }} # si lo creaste en el environment
     steps:
       - uses: actions/checkout@v4
+
+      - name: Probar variable y secreto (sin exponerlos)
+        run: |
+          echo "Sitio: $SITE_NAME"
+          # Validar que existen los secretos sin imprimirlos
+          [ -n "$API_TOKEN" ] || (echo "Falta API_TOKEN"; exit 1)
+          echo "Longitud API_TOKEN: $(printf %s "$API_TOKEN" | wc -c)"
+          [ -n "$PROD_WEBHOOK_URL" ] && echo "Webhook definido" || echo "Sin webhook (opcional)"
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
