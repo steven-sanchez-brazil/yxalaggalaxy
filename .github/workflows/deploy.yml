@@ -20,6 +20,8 @@ jobs:
     name: 🗂️ Preparar artefacto
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    outputs:
+      archivo_comprimido: ${{ steps.definir-output.outputs.nombre_tgz }}
     steps:
       - uses: actions/checkout@v4
       - name: Comprimir archivos
@@ -27,6 +29,17 @@ jobs:
           mkdir build
           cp index.html landing.html script.js styles.css build/
           tar -czf build.tgz build
+
+      - name: Definir output del job
+        id: definir-output
+        run: |
+          FILE_NAME="build.tgz"
+          echo "Nombre del archivo: $FILE_NAME"
+          {
+            echo "nombre_tgz<<EOF"
+            echo "$FILE_NAME"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Subir artefacto
         uses: actions/upload-artifact@v4
         with:
@@ -75,6 +88,10 @@ jobs:
       PROD_WEBHOOK_URL: ${{ secrets.PROD_WEBHOOK_URL }} # si lo creaste en el environment
     steps:
       - uses: actions/checkout@v4
+
+      - name: Leer output del job anterior
+        run: |
+          echo "El archivo recibido desde prepare es: ${{ needs.prepare.outputs.archivo_comprimido }}"
 
       - name: Probar variable y secreto (sin exponerlos)
         run: |
